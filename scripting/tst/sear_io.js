@@ -1,0 +1,82 @@
+//=============================================================================
+// Name: sear_io
+//
+// Auth: Vicente Iborra
+//
+// Desc: This module tests the sear.io module.
+//=============================================================================
+!INC Sear-Scripts-Src.sear
+!INC Sear-Scripts-Src.sear_io
+!INC Sear-Scripts-Src.sear_ea_unit
+(function() {
+
+	//=========================================================================
+	// Establish namespace
+	//=========================================================================
+	var NS_STRING = "sear.io.tst";
+	var module = sear.namespace(NS_STRING);
+
+	//=========================================================================
+	// Desc: This test class tests methods on the va.io.ArrayConsole class.
+	//=========================================================================
+	module.TestArrayConsole = function() {
+		this.name = "sear.io.tst.TestArrayConsole";
+	}
+	module.TestArrayConsole.prototype = new sear.ea.unit.TestClass();
+
+	//-------------------------------------------------------------------------
+	// Desc: This tests the object creation method.
+	//-------------------------------------------------------------------------
+	module.TestArrayConsole.prototype.testObjectCreation = function() {
+		var console = new sear.io.ArrayConsole();
+		this.assertNotNull(console.output, "There should never be a null output");
+	}
+
+	//-------------------------------------------------------------------------
+	// Desc: This tests the write method.
+	//-------------------------------------------------------------------------
+	module.TestArrayConsole.prototype.testWrite = function() {
+		
+		var console = new sear.io.ArrayConsole();
+		
+		console.write("abc");
+		this.assertEquals(1, console.output.length);
+		this.assertEquals("abc", console.output[0]);
+		
+		console.write("jkl");
+		this.assertEquals(1, console.output.length);
+		this.assertEquals("abcjkl", console.output[0]);
+	}
+
+	//-------------------------------------------------------------------------
+	// Desc: This tests the writeLine method.
+	//-------------------------------------------------------------------------
+	module.TestArrayConsole.prototype.testWriteLine = function() {
+		
+		var console = new sear.io.ArrayConsole();
+		
+		console.writeLine("abc");
+		this.assertEquals(1, console.output.length);
+		this.assertEquals("abc", console.output[0]);
+		
+		console.writeLine("jkl");
+		this.assertEquals(2, console.output.length);
+		this.assertEquals("abc", console.output[0]);
+		this.assertEquals("jkl", console.output[1]);
+	}
+
+	//=========================================================================
+	// Desc: This section registers the test classes in this module with the
+	//       default test runner.
+	//=========================================================================
+	sear.ea.unit.testRunner.registerTestClasses([
+		new module.TestArrayConsole()
+	]);
+
+	//=========================================================================
+	// Desc: This section uses the default test runner to run the tests in this
+	//       module.  That is, runs the registered tests in single mode.
+	//=========================================================================
+	sear.ea.unit.testRunner.runTests("single");
+
+})();

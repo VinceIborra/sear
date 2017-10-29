@@ -1,0 +1,4 @@
+grep qsl *.js
+grep qsuper *.js
+grep vji *.js
+grep qarchimate *.js
