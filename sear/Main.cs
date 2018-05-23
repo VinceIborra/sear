@@ -10,16 +10,30 @@ using System;
 using System.Collections.Generic;
 using System.Windows.Forms;
 using System.IO;
+
+using Spring.Context;
+using Spring.Context.Support;
 using Vji.Bob;
 
-namespace aws
-{
-	public class Main
-	{
+namespace aws {
+
+	public class Main {
+
 		public string filecontents = "";
 		public bool readline = false;
 		private bool m_ShowFullMenus = false;
 		public Form1 theForm;
+
+        private IApplicationContext _context = null;
+
+        public IApplicationContext context {
+            get {
+                if (this._context == null) {
+                    this._context = new XmlApplicationContext("assembly://sear_aws/aws/context.xml");
+                }
+                return this._context;
+            }
+        }
 
 		//Called Before EA starts to check Add-In Exists
 		public String EA_Connect(EA.Repository Repository) {
@@ -60,7 +74,7 @@ namespace aws
 				case "":
 					return "-&AWS";
 				case "-&AWS":
-					string[] ar = { "&Tagged CSV Export", "About..." };
+					string[] ar = { "&Tagged CSV Export", "Menu2", "About..." };
 					return ar;
 			}
 			return "";
@@ -85,10 +99,12 @@ namespace aws
 		{
 			if( IsProjectOpen(Repository) )
 			{
-				if( ItemName == "&Tagged CSV Export" )
-					IsChecked = m_ShowFullMenus;
-				else if( ItemName == "Menu2")
-					IsEnabled = m_ShowFullMenus;
+                if (ItemName == "&Tagged CSV Export")
+                    IsChecked = m_ShowFullMenus;
+                else if (ItemName == "Menu2") {
+                    IsChecked = m_ShowFullMenus;
+                    //IsEnabled = m_ShowFullMenus;
+                }
 			}
 			else
 				// If no open project, disable all menu options
@@ -148,11 +164,11 @@ namespace aws
 					tw.Close();
 
 					break;					
-				case "&Menu2":	
 
-
-					
+				case "Menu2":
+                    IApplicationContext ctx = this.context;
 					break;
+
 				case "About...":
 					Form1 anAbout = new Form1();
 					anAbout.ShowDialog();					
